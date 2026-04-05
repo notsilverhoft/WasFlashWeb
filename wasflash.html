@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+
+<link rel="stylesheet" href="wasflash.css" />
+
+</head>
+
+<header>
+
+  <a href="wasflash.html"><img src="WasFlash.webp" id="logo"></a>
+
+</header>
+
+<body id="Content">
+
+
+
+<div id="PlayerControls">
+  <input type="file" id="SWFFile" accept=".swf" style="display:none" />
+  <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
+  <button class="PlayerButtons" onclick="loadSwf()">Start</button>
+</div>
+
+<div id="PlayerLabel">
+  <span>WASFLASH PLAYER</span>
+</div>
+
+<div id="PlayerGlow">
+  <div id="PlayerFrame">
+    <iframe id="player" style="border:none;"></iframe>
+  </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<div id="TerminalLabel">
+  <span>CONSOLE OUTPUT</span>
+</div>
+
+
+<div id="Terminal">
+  <div id="TerminalInner">
+    <div id="TerminalOutput"></div>
+  </div>
+</div>
+
+<script>
+  const output = document.getElementById('TerminalOutput');
+
+  function logToTerminal(type, args) {
+    const line = document.createElement('p');
+    const colors = { log: '#39ff88', warn: '#00ffff', error: '#ff4444' };
+    line.style.color = colors[type] || '#39ff88';
+    line.textContent = `> ${Array.from(args).join(' ')}`;
+    output.appendChild(line);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  ['log', 'warn', 'error'].forEach(type => {
+    const original = console[type];
+    console[type] = function(...args) {
+      logToTerminal(type, args);
+      original.apply(console, args);
+    };
+  });
+
+  async function loadSwf() {
+    const file = document.getElementById('SWFFile').files[0];
+    if (!file) return alert('Please select a .swf file first');
+
+    const objectUrl = URL.createObjectURL(file);
+    const wasflashUrl = new URL('wasflash.js', window.location.href).href;
+
+    const iframe = document.getElementById('player');
+    iframe.srcdoc = `
+      <style>body { margin: 0; overflow: hidden; }</style>
+      <canvas id="canvas"></canvas>
+      <script src="${wasflashUrl}"><\/script>
+      <script>
+        fetch('${objectUrl}')
+          .then(r => r.arrayBuffer())
+          .then(buf => {
+            const bytes = new Uint8Array(buf);
+            WasFlash({
+              canvas: document.getElementById('canvas'),
+              onRuntimeInitialized: function() {
+                this.FS.writeFile('/${file.name}', bytes);
+                this.callMain(['/${file.name}']);
+              }
+            });
+          });
+
+        const observer = new ResizeObserver(() => {
+          const canvas = document.getElementById('canvas');
+          window.parent.postMessage({
+            width: canvas.width,
+            height: canvas.height
+          }, '*');
+        });
+        observer.observe(document.getElementById('canvas'));
+      <\/script>
+    `;
+
+    window.addEventListener('message', (e) => {
+      if (e.data.width && e.data.height) {
+        const container = document.getElementById('PlayerFrame');
+
+        iframe.width = e.data.width;
+        iframe.height = e.data.height;
+
+        const scale = Math.min(
+          container.offsetWidth / e.data.width,
+          container.offsetHeight / e.data.height
+        );
+
+        const scaledWidth = e.data.width * scale;
+        const scaledHeight = e.data.height * scale;
+        const offsetX = (container.offsetWidth - scaledWidth) / 2;
+        const offsetY = (container.offsetHeight - scaledHeight) / 2;
+
+        iframe.style.transformOrigin = '0 0';
+        iframe.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+      }
+    });
+  }
+</script>
+</body>
