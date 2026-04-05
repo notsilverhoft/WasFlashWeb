@@ -4,11 +4,9 @@ header {
     z-index: 1000;
     background-color: #0F0F0F;
 }
-
 #Content {
     background-color: #0F0F0F;
 }
-
 #PlayerControls {
     display: flex;
     justify-content: center;
@@ -17,7 +15,6 @@ header {
     padding: 2rem 0 1.2rem 0;
     width: 100%;
 }
-
 .PlayerButtons {
     background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
     background-size: 3000% 100%;
@@ -42,22 +39,18 @@ header {
     outline: 1.5px solid #c60dab;
     outline-offset: -1.5px;
 }
-
 .PlayerButtons:hover {
     outline-color: #fa982e;
     box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
 }
-
 @keyframes wave {
   0%   { background-position: 100% 0%; }
   100% { background-position: 0% 0%; }
 }
-
 #logo {
     transform: scale(0.6);
     transform-origin: top left;
 }
-
 #PlayerLabel {
     width: 1080px;
     position: absolute;
@@ -66,9 +59,8 @@ header {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0 0.4rem 0.4rem 0.4rem;
+    padding: 0 0.4rem;
 }
-
 #PlayerLabel span {
     background-image: linear-gradient(90deg, #fa982e, #c60dab, #fa982e);
     background-size: 300% 100%;
@@ -81,7 +73,6 @@ header {
     letter-spacing: 0.15em;
     white-space: nowrap;
 }
-
 #PlayerLabel::before,
 #PlayerLabel::after {
     content: '';
@@ -89,11 +80,9 @@ header {
     height: 1px;
     background: linear-gradient(90deg, transparent, #c60dab55);
 }
-
 #PlayerLabel::after {
     background: linear-gradient(90deg, #c60dab55, transparent);
 }
-
 #PlayerGlow {
     position: absolute;
     left: 50%;
@@ -109,15 +98,13 @@ header {
         0 0 30px #c60dab99,
         0 0 60px #c60dab55,
         0 0 100px #c60dab22;
-    margin-top: 1.8rem;
+    margin-top: 2.4rem;
 }
-
 @keyframes borderShift {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
 #PlayerFrame {
     display: flex;
     background-color: black;
@@ -127,12 +114,10 @@ header {
     border-radius: 4px;
     position: relative;
 }
-
 #player {
     transform-origin: top left;
     position: absolute;
 }
-
 #TerminalLabel {
     width: 1080px;
     position: absolute;
@@ -142,9 +127,8 @@ header {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0 0.4rem 0.4rem 0.4rem;
+    padding: 0 0.4rem;
 }
-
 #TerminalLabel span {
     background-image: linear-gradient(90deg, #39ff88, #00ffff, #39ff88);
     background-size: 300% 100%;
@@ -157,7 +141,6 @@ header {
     letter-spacing: 0.15em;
     white-space: nowrap;
 }
-
 #TerminalLabel::before,
 #TerminalLabel::after {
     content: '';
@@ -165,9 +148,141 @@ header {
     height: 1px;
     background: linear-gradient(90deg, transparent, #39ff8855);
 }
-
 #TerminalLabel::after {
     background: linear-gradient(90deg, #39ff8855, transparent);
+}
+#TerminalControls {
+    width: 1080px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 778px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.4rem 0.6rem 0.4rem;
+    overflow: hidden;
+}
+
+/* Throttle slider group — slides in/out */
+.slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: opacity 0.4s ease, transform 0.4s ease, max-width 0.4s ease;
+    max-width: 400px;
+    overflow: hidden;
+}
+.slider-wrap.hidden {
+    opacity: 0;
+    transform: translateX(-16px);
+    max-width: 0;
+    pointer-events: none;
+}
+
+/* Console toggle group */
+.toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+/* Disclaimer — same slide animation as the throttle slider but from the right */
+.disclaimer-wrap {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease, max-width 0.4s ease;
+    max-width: 600px;
+}
+.disclaimer-wrap.hidden {
+    opacity: 0;
+    transform: translateX(16px);
+    max-width: 0;
+    pointer-events: none;
+}
+
+#TerminalControls label {
+    background-image: linear-gradient(90deg, #39ff88, #00ffff, #39ff88);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: terminalShift 6s ease infinite;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+}
+#TerminalControls input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, #39ff88, #00ffff);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+#TerminalControls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #39ff88;
+    box-shadow: 0 0 6px #39ff8899;
+    cursor: pointer;
+}
+#TerminalControls span {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: #39ff88;
+    min-width: 40px;
+}
+
+/* Switch track */
+.switch-track {
+    position: relative;
+    width: 44px;
+    height: 22px;
+    border-radius: 11px;
+    background: #1a1a1a;
+    border: 1px solid #39ff8833;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+}
+.switch-track.on {
+    background: linear-gradient(90deg, #39ff8833, #00ffff33);
+    border-color: #39ff8899;
+    box-shadow: 0 0 8px #39ff8866;
+}
+.switch-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #39ff8855;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.switch-track.on .switch-thumb {
+    transform: translateX(22px);
+    background: #39ff88;
+    box-shadow: 0 0 6px #39ff8899;
+}
+
+/* Disclaimer text — override the generic span color */
+#consoleDisclaimer {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: #39ff8844;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    min-width: unset;
 }
 
 #Terminal {
@@ -175,7 +290,7 @@ header {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 798px;
+    margin-top: 828px;
     border-radius: 6px;
     padding: 3px;
     background: linear-gradient(135deg, #39ff88, #00ffff, #39ff88);
@@ -187,7 +302,6 @@ header {
         0 0 100px #39ff8822;
     height: 580px;
 }
-
 #TerminalInner {
     background: #0a0a0a;
     border-radius: 4px;
@@ -199,13 +313,11 @@ header {
     color: #39ff88;
     box-sizing: border-box;
 }
-
 #TerminalOutput p {
     margin: 0;
     padding: 0.1rem 0;
     border-bottom: 1px solid #ffffff08;
 }
-
 @keyframes terminalShift {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
