@@ -7,6 +7,5 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Cross-Origin-Embedder-Policy', 'require-corp')
         super().end_headers()
 
-with socketserver.TCPServer(('0.0.0.0', 80), Handler) as httpd:
-    print('Serving at http://0.0.0.0:80')
+with socketserver.TCPServer(('0.0.0.0', 81), Handler) as httpd:
     httpd.serve_forever()
