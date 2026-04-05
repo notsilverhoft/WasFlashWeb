@@ -1,82 +1,163 @@
 <!DOCTYPE html>
 <head>
-
 <link rel="stylesheet" href="wasflash.css" />
-
 </head>
-
 <header>
-
-  <a href="index.html"><img src="WasFlash.webp" id="logo"></a>
-
+  <a href="wasflash.html"><img src="WasFlash.webp" id="logo"></a>
 </header>
-
 <body id="Content">
-
-
-
 <div id="PlayerControls">
   <input type="file" id="SWFFile" accept=".swf" style="display:none" />
   <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
   <button class="PlayerButtons" onclick="loadSwf()">Start</button>
 </div>
-
 <div id="PlayerLabel">
   <span>WASFLASH PLAYER</span>
 </div>
-
 <div id="PlayerGlow">
   <div id="PlayerFrame">
     <iframe id="player" style="border:none;"></iframe>
   </div>
 </div>
-
-<br>
-<br>
-<br>
-
+<br><br><br>
 <div id="TerminalLabel">
   <span>CONSOLE OUTPUT</span>
 </div>
-
-
+<div id="TerminalControls">
+  <div class="slider-wrap hidden" id="sliderWrap">
+    <label for="ThrottleSlider">THROTTLE</label>
+    <input type="range" id="ThrottleSlider" min="0" max="2000" step="50" value="250" />
+    <span id="ThrottleValue">250ms</span>
+  </div>
+  <div class="toggle-wrap">
+    <label for="consoleToggle">CONSOLE</label>
+    <div class="switch-track" id="consoleToggle" role="switch" aria-checked="false" tabindex="0">
+      <div class="switch-thumb"></div>
+    </div>
+  </div>
+  <div class="disclaimer-wrap" id="disclaimerWrap">
+    <span id="consoleDisclaimer">Note: Must be set before starting &bull; Causes lag</span>
+  </div>
+</div>
 <div id="Terminal">
   <div id="TerminalInner">
     <div id="TerminalOutput"></div>
   </div>
 </div>
-
 <script>
   const output = document.getElementById('TerminalOutput');
+  const terminalInner = document.getElementById('TerminalInner');
+  const throttleSlider = document.getElementById('ThrottleSlider');
+  const throttleValue = document.getElementById('ThrottleValue');
+  const consoleToggle = document.getElementById('consoleToggle');
+  const sliderWrap = document.getElementById('sliderWrap');
+  const disclaimerWrap = document.getElementById('disclaimerWrap');
+  const MAX_LINES = 200;
+  let throttleMs = 250;
+  let pollId = null;
+  let lastSeen = null;
+  let consoleEnabled = false;
 
-  function logToTerminal(type, args) {
-    const line = document.createElement('p');
-    const colors = { log: '#39ff88', warn: '#00ffff', error: '#ff4444' };
-    line.style.color = colors[type] || '#39ff88';
-    line.textContent = `> ${Array.from(args).join(' ')}`;
-    output.appendChild(line);
-    output.scrollTop = output.scrollHeight;
+  function startPolling() {
+    if (pollId) clearInterval(pollId);
+    if (!consoleEnabled) return;
+    if (throttleMs === 0) return;
+    pollId = setInterval(() => {
+      if (!consoleEnabled) return;
+      try {
+        const iframe = document.getElementById('player');
+        const log = iframe.contentWindow.__lastLog;
+        if (log && log !== lastSeen) {
+          lastSeen = log;
+          logToTerminal(log.type, [Array.from(log.args).map(String)]);
+        }
+      } catch(e) {}
+    }, throttleMs);
   }
 
-  ['log', 'warn', 'error'].forEach(type => {
-    const original = console[type];
-    console[type] = function(...args) {
-      logToTerminal(type, args);
-      original.apply(console, args);
-    };
+  function stopPolling() {
+    if (pollId) { clearInterval(pollId); pollId = null; }
+    lastSeen = null;
+  }
+
+  function setConsole(enabled) {
+    consoleEnabled = enabled;
+    consoleToggle.classList.toggle('on', enabled);
+    consoleToggle.setAttribute('aria-checked', enabled);
+    sliderWrap.classList.toggle('hidden', !enabled);
+    disclaimerWrap.classList.toggle('hidden', enabled);
+    if (enabled) {
+      startPolling();
+    } else {
+      stopPolling();
+    }
+  }
+
+  consoleToggle.addEventListener('click', () => setConsole(!consoleEnabled));
+  consoleToggle.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setConsole(!consoleEnabled); }
+  });
+
+  throttleSlider.addEventListener('input', () => {
+    throttleMs = parseInt(throttleSlider.value);
+    throttleValue.textContent = throttleMs === 0 ? 'FULL' : `${throttleMs}ms`;
+    if (consoleEnabled) startPolling();
+  });
+
+  function logToTerminal(type, batches) {
+    if (!consoleEnabled) return;
+    const colors = { log: '#39ff88', warn: '#00ffff', error: '#ff4444' };
+    const color = colors[type] || '#39ff88';
+    const fragment = document.createDocumentFragment();
+    batches.forEach(args => {
+      const line = document.createElement('p');
+      line.style.color = color;
+      line.textContent = `> ${Array.isArray(args) ? args.join(' ') : args}`;
+      fragment.appendChild(line);
+    });
+    output.appendChild(fragment);
+    while (output.children.length > MAX_LINES) output.removeChild(output.firstChild);
+    terminalInner.scrollTop = terminalInner.scrollHeight;
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data.width && e.data.height) {
+      const iframe = document.getElementById('player');
+      const container = document.getElementById('PlayerFrame');
+      iframe.width = e.data.width;
+      iframe.height = e.data.height;
+      const scale = Math.min(
+        container.offsetWidth / e.data.width,
+        container.offsetHeight / e.data.height
+      );
+      const offsetX = (container.offsetWidth - e.data.width * scale) / 2;
+      const offsetY = (container.offsetHeight - e.data.height * scale) / 2;
+      iframe.style.transformOrigin = '0 0';
+      iframe.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    }
   });
 
   async function loadSwf() {
     const file = document.getElementById('SWFFile').files[0];
     if (!file) return alert('Please select a .swf file first');
-
     const objectUrl = URL.createObjectURL(file);
     const wasflashUrl = new URL('wasflash.js', window.location.href).href;
-
     const iframe = document.getElementById('player');
+
+    const consoleOverride = consoleEnabled ? `
+      ['log', 'warn', 'error'].forEach(type => {
+        const original = console[type];
+        console[type] = function() {
+          original.apply(console, arguments);
+          window.__lastLog = { type, args: arguments };
+        };
+      });
+    ` : '';
+
     iframe.srcdoc = `
       <style>body { margin: 0; overflow: hidden; }</style>
       <canvas id="canvas"></canvas>
+      <script>${consoleOverride}<\/script>
       <script src="${wasflashUrl}"><\/script>
       <script>
         fetch('${objectUrl}')
@@ -91,39 +172,15 @@
               }
             });
           });
-
         const observer = new ResizeObserver(() => {
           const canvas = document.getElementById('canvas');
-          window.parent.postMessage({
-            width: canvas.width,
-            height: canvas.height
-          }, '*');
+          window.parent.postMessage({ width: canvas.width, height: canvas.height }, '*');
         });
         observer.observe(document.getElementById('canvas'));
       <\/script>
     `;
-
-    window.addEventListener('message', (e) => {
-      if (e.data.width && e.data.height) {
-        const container = document.getElementById('PlayerFrame');
-
-        iframe.width = e.data.width;
-        iframe.height = e.data.height;
-
-        const scale = Math.min(
-          container.offsetWidth / e.data.width,
-          container.offsetHeight / e.data.height
-        );
-
-        const scaledWidth = e.data.width * scale;
-        const scaledHeight = e.data.height * scale;
-        const offsetX = (container.offsetWidth - scaledWidth) / 2;
-        const offsetY = (container.offsetHeight - scaledHeight) / 2;
-
-        iframe.style.transformOrigin = '0 0';
-        iframe.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
-      }
-    });
+    iframe.onload = () => { if (consoleEnabled) startPolling(); };
   }
 </script>
+</body>
 </body>
