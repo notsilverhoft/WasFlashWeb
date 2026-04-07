@@ -8,6 +8,30 @@ header {
     align-items: center;
     padding: 0 1.5rem;
 }
+
+.nav-link {
+    justify-self: end;
+    background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+    background-size: 3000% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 0.9rem;
+    font-weight: 700;
+    animation: wave 10s linear infinite;
+    border-radius: 20px;
+    padding: 0.4rem 1.2rem;
+    text-decoration: none;
+    outline: 1.5px solid #c60dab;
+    outline-offset: -1.5px;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 10px #c60dab44;
+}
+.nav-link:hover {
+    outline-color: #fa982e;
+    box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
+}
+
 #Content {
     background-color: #0F0F0F;
 }
