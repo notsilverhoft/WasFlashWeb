@@ -3,6 +3,10 @@ header {
     top: 0;
     z-index: 1000;
     background-color: #0F0F0F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
 }
 #Content {
     background-color: #0F0F0F;
@@ -51,11 +55,31 @@ header {
     transform: scale(0.6);
     transform-origin: top left;
 }
+.nav-link {
+    background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+    background-size: 3000% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 0.9rem;
+    font-weight: 700;
+    animation: wave 10s linear infinite;
+    border-radius: 20px;
+    padding: 0.4rem 1.2rem;
+    text-decoration: none;
+    outline: 1.5px solid #c60dab;
+    outline-offset: -1.5px;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 10px #c60dab44;
+}
+.nav-link:hover {
+    outline-color: #fa982e;
+    box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
+}
 #PlayerLabel {
     width: 1080px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    max-width: 100%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -84,10 +108,9 @@ header {
     background: linear-gradient(90deg, #c60dab55, transparent);
 }
 #PlayerGlow {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
     width: 1080px;
+    max-width: 100%;
+    margin: 2.4rem auto 0 auto;
     height: 720px;
     border-radius: 6px;
     padding: 3px;
@@ -98,7 +121,6 @@ header {
         0 0 30px #c60dab99,
         0 0 60px #c60dab55,
         0 0 100px #c60dab22;
-    margin-top: 2.4rem;
 }
 @keyframes borderShift {
     0%   { background-position: 0% 50%; }
@@ -158,10 +180,8 @@ header {
 
 #TerminalLabel {
     width: 1080px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 758px;
+    max-width: 100%;
+    margin: 1.5rem auto 0 auto;
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -191,10 +211,8 @@ header {
 }
 #TerminalControls {
     width: 1080px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 778px;
+    max-width: 100%;
+    margin: 0.5rem auto 0 auto;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -325,10 +343,8 @@ header {
 
 #Terminal {
     width: 1080px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 828px;
+    max-width: 100%;
+    margin: 0.5rem auto 2rem auto;
     border-radius: 6px;
     padding: 3px;
     background: linear-gradient(135deg, #39ff88, #00ffff, #39ff88);
