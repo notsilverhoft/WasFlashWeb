@@ -63,10 +63,11 @@
   let lastSeen = null;
   let consoleEnabled = false;
 
-  async function loadPreset(filename) {
-    const response = await fetch(filename);
+  async function loadPreset(filepath) {
+    const response = await fetch(filepath);
     const blob = await response.blob();
-    const file = new File([blob], filename, { type: 'application/x-shockwave-flash' });
+    const basename = filepath.split('/').pop();
+    const file = new File([blob], basename, { type: 'application/x-shockwave-flash' });
     const dt = new DataTransfer();
     dt.items.add(file);
     document.getElementById('SWFFile').files = dt.files;
@@ -157,6 +158,7 @@
     const objectUrl = URL.createObjectURL(file);
     const wasflashUrl = new URL('wasflash.js', window.location.href).href;
     const iframe = document.getElementById('player');
+    const basename = file.name.split('/').pop();
 
     const consoleOverride = consoleEnabled ? `
       ['log', 'warn', 'error'].forEach(type => {
@@ -181,8 +183,8 @@
             WasFlash({
               canvas: document.getElementById('canvas'),
               onRuntimeInitialized: function() {
-                this.FS.writeFile('/${file.name}', bytes);
-                this.callMain(['/${file.name}']);
+                this.FS.writeFile('/${basename}', bytes);
+                this.callMain(['/${basename}']);
               }
             });
           });
