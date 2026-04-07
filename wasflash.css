@@ -3,6 +3,9 @@ header {
     top: 0;
     z-index: 1000;
     background-color: #0F0F0F;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 #Content {
     background-color: #0F0F0F;
