@@ -19,7 +19,12 @@
     <iframe id="player" style="border:none;"></iframe>
   </div>
 </div>
-<br><br><br>
+<div id="PresetControls">
+  <button class="PresetButton" onclick="loadPreset('game1.swf')">Game 1</button>
+  <button class="PresetButton" onclick="loadPreset('game2.swf')">Game 2</button>
+  <button class="PresetButton" onclick="loadPreset('game3.swf')">Game 3</button>
+  <button class="PresetButton" onclick="loadPreset('game4.swf')">Game 4</button>
+</div>
 <div id="TerminalLabel">
   <span>CONSOLE OUTPUT</span>
 </div>
@@ -57,6 +62,15 @@
   let pollId = null;
   let lastSeen = null;
   let consoleEnabled = false;
+
+  async function loadPreset(filename) {
+    const response = await fetch(filename);
+    const blob = await response.blob();
+    const file = new File([blob], filename, { type: 'application/x-shockwave-flash' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('SWFFile').files = dt.files;
+  }
 
   function startPolling() {
     if (pollId) clearInterval(pollId);
@@ -182,5 +196,4 @@
     iframe.onload = () => { if (consoleEnabled) startPolling(); };
   }
 </script>
-</body>
 </body>
