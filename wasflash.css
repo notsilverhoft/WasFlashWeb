@@ -323,3 +323,45 @@ header {
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+#PresetControls {
+    width: 1080px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 730px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.4rem;
+}
+
+.PresetButton {
+    background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+    background-size: 3000% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 0.85rem;
+    font-weight: 700;
+    animation: wave 10s linear infinite;
+    border: 1.5px solid transparent;
+    border-radius: 20px;
+    padding: 0.4rem 0;
+    width: 140px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: box-shadow 0.3s ease;
+    position: relative;
+    background-origin: border-box;
+    box-shadow:
+        inset 0 0 0 1.5px transparent,
+        0 0 8px #c60dab33;
+    outline: 1.5px solid #c60dab55;
+    outline-offset: -1.5px;
+}
+
+.PresetButton:hover {
+    outline-color: #fa982e;
+    box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
+}
