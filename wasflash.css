@@ -291,8 +291,10 @@ header {
     max-width: 100%;
     margin: 0.5rem auto 0 auto;
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 0 0.4rem; 
+    padding: 0 0.4rem;
+    text-align: center;
     overflow: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease, max-width 0.4s ease;
 }
@@ -390,9 +392,8 @@ header {
     color: #fa982e;
     letter-spacing: 0.05em;
     white-space: nowrap;
-    min-width: unset;
+    opacity: 0.7;
 }
-
 #Terminal {
     width: 1080px;
     max-width: 100%;
