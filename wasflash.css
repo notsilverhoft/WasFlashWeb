@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Share Tech Mono', monospace;
+}
+
 header {
     position: sticky;
     top: 0;
@@ -6,33 +17,28 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1.2rem;
-
-    /* Give the header some breathing room so the About button isn't hugging the edge */
     padding: 0.35rem 1.25rem;
+    border-bottom: 1px solid #c60dab22;
 }
 
-/* About button / header nav link */
 .nav-link {
-    justify-self: end;
     background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
     background-size: 3000% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 0.9rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
     font-weight: 700;
+    letter-spacing: 0.15em;
     animation: wave 10s linear infinite;
     border-radius: 20px;
     padding: 0.4rem 1.2rem;
     text-decoration: none;
-    outline: 1.5px solid #c60dab;
+    outline: 1.5px solid #c60dab55;
     outline-offset: -1.5px;
-    transition: box-shadow 0.3s ease;
-    box-shadow: 0 0 10px #c60dab44;
-
-    /* Nudge it up a touch relative to the logo */
-    margin-top: -2px;
+    transition: box-shadow 0.3s ease, outline-color 0.3s ease;
+    box-shadow: 0 0 10px #c60dab22;
 }
 .nav-link:hover {
     outline-color: #fa982e;
@@ -42,6 +48,7 @@ header {
 #Content {
     background-color: #0F0F0F;
 }
+
 #PlayerControls {
     display: flex;
     justify-content: center;
@@ -49,17 +56,21 @@ header {
     gap: 0.8rem;
     padding: 2rem 0 1.2rem 0;
     width: 100%;
+    flex-wrap: wrap;
 }
+
 .PlayerButtons {
     background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
     background-size: 3000% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
     font-weight: 700;
+    letter-spacing: 0.08em;
     animation: wave 10s linear infinite;
-    border: 1.5px solid transparent;
+    border: none;
     border-radius: 20px;
     padding: 0.5rem 0;
     width: 140px;
@@ -68,9 +79,7 @@ header {
     transition: box-shadow 0.3s ease;
     position: relative;
     background-origin: border-box;
-    box-shadow:
-        inset 0 0 0 1.5px transparent,
-        0 0 10px #c60dab44;
+    box-shadow: 0 0 10px #c60dab44;
     outline: 1.5px solid #c60dab;
     outline-offset: -1.5px;
 }
@@ -78,14 +87,17 @@ header {
     outline-color: #fa982e;
     box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
 }
+
 @keyframes wave {
   0%   { background-position: 100% 0%; }
   100% { background-position: 0% 0%; }
 }
+
 #logo {
     transform: scale(0.6);
     transform-origin: top left;
 }
+
 #PlayerLabel {
     width: 1080px;
     max-width: 100%;
@@ -102,9 +114,10 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: borderShift 6s ease infinite;
-    font-size: 0.75rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     white-space: nowrap;
 }
 #PlayerLabel::before,
@@ -117,6 +130,7 @@ header {
 #PlayerLabel::after {
     background: linear-gradient(90deg, #c60dab55, transparent);
 }
+
 #PlayerGlow {
     width: 1080px;
     max-width: 100%;
@@ -132,11 +146,13 @@ header {
         0 0 60px #c60dab55,
         0 0 100px #c60dab22;
 }
+
 @keyframes borderShift {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
 #PlayerFrame {
     display: flex;
     background-color: black;
@@ -151,11 +167,12 @@ header {
     position: absolute;
 }
 
-/* Preset buttons — inline between Upload and Start */
 #PresetControls {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .PresetButton {
@@ -164,25 +181,23 @@ header {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 0.85rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
     font-weight: 700;
     animation: wave 10s linear infinite;
-    border: 1.5px solid transparent;
+    border: none;
     border-radius: 20px;
     padding: 0.4rem 0;
-    width: 100px;
+    width: 105px;
     cursor: pointer;
     background-color: transparent;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, outline-color 0.3s ease;
     position: relative;
     background-origin: border-box;
-    box-shadow:
-        inset 0 0 0 1.5px transparent,
-        0 0 8px #c60dab22;
+    box-shadow: 0 0 6px #c60dab1a;
     outline: 1.5px solid #c60dab44;
     outline-offset: -1.5px;
 }
-
 .PresetButton:hover {
     outline-color: #fa982e;
     box-shadow: 0 0 16px #c60dab99, 0 0 30px #c60dab44;
@@ -204,9 +219,10 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: terminalShift 6s ease infinite;
-    font-size: 0.75rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     white-space: nowrap;
 }
 #TerminalLabel::before,
@@ -219,6 +235,7 @@ header {
 #TerminalLabel::after {
     background: linear-gradient(90deg, #39ff8855, transparent);
 }
+
 #TerminalControls {
     width: 1080px;
     max-width: 100%;
@@ -230,7 +247,6 @@ header {
     overflow: hidden;
 }
 
-/* Throttle slider group — slides in/out */
 .slider-wrap {
     display: flex;
     align-items: center;
@@ -246,7 +262,6 @@ header {
     pointer-events: none;
 }
 
-/* Console toggle group */
 .toggle-wrap {
     display: flex;
     align-items: center;
@@ -254,7 +269,6 @@ header {
     flex-shrink: 0;
 }
 
-/* Disclaimer — same slide animation as the throttle slider but from the right */
 .disclaimer-wrap {
     display: flex;
     align-items: center;
@@ -276,7 +290,8 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: terminalShift 6s ease infinite;
-    font-size: 0.7rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.15em;
     white-space: nowrap;
@@ -302,13 +317,12 @@ header {
     cursor: pointer;
 }
 #TerminalControls span {
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
     color: #39ff88;
     min-width: 40px;
 }
 
-/* Switch track */
 .switch-track {
     position: relative;
     width: 44px;
@@ -341,9 +355,8 @@ header {
     box-shadow: 0 0 6px #39ff8899;
 }
 
-/* Disclaimer text — override the generic span color */
 #consoleDisclaimer {
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.65rem;
     color: #39ff8844;
     letter-spacing: 0.05em;
@@ -372,7 +385,7 @@ header {
     height: 100%;
     padding: 0.8rem 1rem;
     overflow-y: auto;
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.8rem;
     color: #39ff88;
     box-sizing: border-box;
@@ -387,3 +400,176 @@ header {
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+    .about-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem 2rem;
+      color: #c8c8c8;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.85;
+    }
+
+    .about-hero {
+      margin-bottom: 4rem;
+      border-left: 2px solid #c60dab;
+      padding-left: 1.5rem;
+    }
+
+    .about-hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin: 0 0 0.5rem 0;
+      background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+      background-size: 300% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: borderShift 6s ease infinite;
+    }
+
+    .about-hero .subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      color: #c60dab88;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #fa982e99;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, #fa982e33, transparent);
+    }
+
+    .section h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #fa982e;
+      margin: 0 0 1rem 0;
+    }
+
+    .section p {
+      margin: 0 0 1rem 0;
+      color: #aaaaaa;
+    }
+
+    .section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .callout {
+      border: 1px solid #c60dab33;
+      border-left: 3px solid #c60dab;
+      background: #c60dab08;
+      padding: 1rem 1.25rem;
+      border-radius: 0 4px 4px 0;
+      margin: 1.5rem 0;
+      color: #c8c8c8;
+      font-size: 0.88rem;
+    }
+
+    .callout.green {
+      border-color: #39ff8833;
+      border-left-color: #39ff88;
+      background: #39ff8808;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c60dab44, transparent);
+      margin: 3rem 0;
+    }
+
+    .mono-block {
+      background: #0a0a0a;
+      border: 1px solid #39ff8822;
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #39ff88;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      line-height: 1.7;
+    }
+
+    .mono-block .comment {
+      color: #39ff8855;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid #c60dab44;
+      color: #c60dab99;
+    }
+
+    .tag.green {
+      border-color: #39ff8844;
+      color: #39ff8899;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 3rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+      background-size: 3000% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: wave 10s linear infinite;
+      text-decoration: none;
+      outline: 1.5px solid #c60dab55;
+      outline-offset: 4px;
+      border-radius: 2px;
+      transition: outline-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .back-link:hover {
+      outline-color: #fa982e;
+      box-shadow: 0 0 12px #c60dab66;
+    }
+
+    @keyframes wave {
+      0%   { background-position: 100% 0%; }
+      100% { background-position: 0% 0%; }
+    }
+    @keyframes borderShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
