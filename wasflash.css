@@ -594,6 +594,7 @@ header {
     box-shadow: 0 0 12px #c60dab66;
 }
 
+/* Popup container */
 #flavortownPopup {
     position: fixed;
     bottom: 24px;
@@ -614,24 +615,72 @@ header {
 
     transform: translateY(20px);
     opacity: 0;
+
+    /* delayed + smooth entrance */
     animation: popupFadeIn 0.6s ease forwards;
+    animation-delay: 1.2s;
+
+    /* subtle glow pulse */
+    animation-name: popupFadeIn, popupGlow;
+    animation-duration: 0.6s, 4s;
+    animation-delay: 1.2s, 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1, infinite;
 }
 
+/* Header row */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Icon */
 .popup-icon {
     width: 26px;
     height: 26px;
+    object-fit: contain;
+    opacity: 0.95;
 }
 
+/* Close button */
 #popupClose {
+    background: none;
+    border: none;
+    color: #c60dabaa;
     font-size: 1.3rem;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+#popupClose:hover {
+    color: #fa982e;
+    transform: scale(1.2);
 }
 
+/* Content */
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Main text */
 .popup-main {
+    font-family: 'Orbitron', monospace;
     font-size: 0.75rem;
     letter-spacing: 0.08em;
+    color: #fa982e;
+    margin: 0;
 }
+
+/* Secondary text */
 .popup-sub {
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.68rem;
+    color: #aaaaaa;
+    margin: 0;
     opacity: 0.75;
 }
 
@@ -647,10 +696,24 @@ header {
     border-color: #fa982e;
 }
 
-/* Animation */
+/* Entrance animation */
 @keyframes popupFadeIn {
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+/* Subtle glow pulse */
+@keyframes popupGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 20px #c60dab66,
+            0 0 40px #c60dab33;
+    }
+    50% {
+        box-shadow:
+            0 0 28px #fa982e66,
+            0 0 55px #c60dab44;
     }
 }
