@@ -4,7 +4,7 @@
 </head>
 <header>
   <a href="index.html"><img src="WasFlash.webp" id="logo"></a>
-  <a href="about.html" class="nav-link">About</a>
+  <a href="about.html" class="nav-link">ABOUT</a>
 </header>
 <body id="Content">
 <div id="PlayerControls">
@@ -74,7 +74,6 @@
     document.getElementById('SWFFile').files = dt.files;
   }
 
-  // NEW: preset buttons load the SWF and immediately start the player
   async function loadPresetAndStart(filepath) {
     await loadPreset(filepath);
     await loadSwf();
