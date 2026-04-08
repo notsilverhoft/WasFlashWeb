@@ -287,11 +287,14 @@ header {
 }
 
 .disclaimer-wrap2 {
+    width: 1080px;
+    max-width: 100%;
+    margin: 0.5rem auto 0 auto;
     display: flex;
     align-items: center;
+    padding: 0 0.4rem; 
     overflow: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease, max-width 0.4s ease;
-    max-width: 600px;
 }
 .disclaimer-wrap2.hidden {
     opacity: 0;
