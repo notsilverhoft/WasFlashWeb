@@ -14,21 +14,21 @@
 <div class="about-wrap">
 
   <div class="about-hero">
-    <h1>What is a SWF?</h1>
-    <p class="subtitle">Small Web Format &mdash; a format from another era</p>
+    <h1>What is an SWF?</h1>
+    <p class="subtitle">Shock Wave Flash &mdash; a format from another era</p>
   </div>
 
   <div class="section">
     <div class="section-label">Overview</div>
     <h2>More than a video file</h2>
     <p>
-      SWF — originally standing for ShockWave Flash, later rebranded as Small Web Format — is a binary container format developed by Macromedia and later maintained by Adobe. From the late 1990s through the early 2010s, it was the dominant medium for interactive content on the web. Games, animations, entire applications, and multimedia experiences all shipped as SWF files.
+      An SWF — originally standing for ShockWave Flash, later rebranded as Small Web Format — is a binary media format developed by Macromedia and later run by Adobe. From the late 1990s through the early 2010s, it was one of the only ways to play interactive content on the web. This included games, animations, entire applications, and multimedia experiences all packed into SWF files.
     </p>
     <p>
-      Calling a SWF a "video file" undersells it considerably. A SWF is closer to a compiled program. It contains a timeline, a virtual machine, bytecode, embedded assets, and interactive logic — all packed into a single binary blob. A video file plays back a fixed stream of frames. A SWF can branch, respond to input, load external data, and execute code. The two are fundamentally different things.
+      Calling an SWF a "video file" undersells it considerabl. An SWF is a complete compiled program; It contains a timeline, a virtual machine, bytecode, embedded assets, and interactive logic — all packed into a single binary SWF file. A video file plays back a fixed stream of frames. A SWF can branch, respond to input, load external data, and execute code. The two are fundamentally different things.
     </p>
     <div class="callout">
-      WasFlash currently supports visual SWF playback only. Audio output and ActionScript execution are not yet implemented — so interactive SWFs and anything relying on sound won't behave as expected.
+      WasFlash currently supports visual Video SWF playback only. Audio output and ActionScript execution are not yet implemented — so interactive SWFs and anything relying on pure animation won't behave as expected.
     </div>
   </div>
 
@@ -124,8 +124,7 @@ fn read_sbits(reader, n: usize) -> i32 {
       WasFlash runs a WebAssembly build of a native SWF renderer directly in your browser. The WASM binary handles all parsing, display list management, and vector rasterization. The JavaScript layer sets the required cross-origin headers (COOP/COEP) to enable <code>SharedArrayBuffer</code>, which allows the renderer to use POSIX threads via Emscripten's pthread support — the same threading model it would have on a native system.
     </p>
     <p>
-      The result is a zero-install, zero-plugin SWF player that runs entirely client-side. No file leaves your browser. No server processes your content. The renderer is doing real work: parsing bit-packed records, rebuilding display lists, rasterizing vector geometry to a canvas, and advancing the timeline frame by frame.
-    </p>
+      The result is a zero-install, zero-plugin SWF player that runs entirely client-side. The hope is that one day you will be able to just embed this into your website, and it will play whatever content you please(Usually games).
     <div class="tag-row">
       <span class="tag green">WebAssembly</span>
       <span class="tag green">pthreads via Emscripten</span>
