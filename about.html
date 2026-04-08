@@ -1,1 +1,318 @@
-<H1>Work In Progress :D</H1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — WasFlash</title>
+  <link rel="stylesheet" href="wasflash.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+
+    .about-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem 2rem;
+      color: #c8c8c8;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.85;
+    }
+
+    .about-hero {
+      margin-bottom: 4rem;
+      border-left: 2px solid #c60dab;
+      padding-left: 1.5rem;
+    }
+
+    .about-hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin: 0 0 0.5rem 0;
+      background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+      background-size: 300% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: borderShift 6s ease infinite;
+    }
+
+    .about-hero .subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      color: #c60dab88;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #fa982e99;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, #fa982e33, transparent);
+    }
+
+    .section h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #fa982e;
+      margin: 0 0 1rem 0;
+    }
+
+    .section p {
+      margin: 0 0 1rem 0;
+      color: #aaaaaa;
+    }
+
+    .section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .callout {
+      border: 1px solid #c60dab33;
+      border-left: 3px solid #c60dab;
+      background: #c60dab08;
+      padding: 1rem 1.25rem;
+      border-radius: 0 4px 4px 0;
+      margin: 1.5rem 0;
+      color: #c8c8c8;
+      font-size: 0.88rem;
+    }
+
+    .callout.green {
+      border-color: #39ff8833;
+      border-left-color: #39ff88;
+      background: #39ff8808;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c60dab44, transparent);
+      margin: 3rem 0;
+    }
+
+    .mono-block {
+      background: #0a0a0a;
+      border: 1px solid #39ff8822;
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #39ff88;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      line-height: 1.7;
+    }
+
+    .mono-block .comment {
+      color: #39ff8855;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid #c60dab44;
+      color: #c60dab99;
+    }
+
+    .tag.green {
+      border-color: #39ff8844;
+      color: #39ff8899;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 3rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      background-image: linear-gradient(90deg, #c60dab, #fa982e, #c60dab);
+      background-size: 3000% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: wave 10s linear infinite;
+      text-decoration: none;
+      outline: 1.5px solid #c60dab55;
+      outline-offset: 4px;
+      border-radius: 2px;
+      transition: outline-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .back-link:hover {
+      outline-color: #fa982e;
+      box-shadow: 0 0 12px #c60dab66;
+    }
+
+    @keyframes wave {
+      0%   { background-position: 100% 0%; }
+      100% { background-position: 0% 0%; }
+    }
+    @keyframes borderShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<header>
+  <a href="index.html"><img src="WasFlash.webp" id="logo"></a>
+  <a href="about.html" class="nav-link">ABOUT</a>
+</header>
+<body id="Content">
+<div class="about-wrap">
+
+  <div class="about-hero">
+    <h1>What is a SWF?</h1>
+    <p class="subtitle">Small Web Format &mdash; a format from another era</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Overview</div>
+    <h2>More than a video file</h2>
+    <p>
+      SWF — originally standing for ShockWave Flash, later rebranded as Small Web Format — is a binary container format developed by Macromedia and later maintained by Adobe. From the late 1990s through the early 2010s, it was the dominant medium for interactive content on the web. Games, animations, entire applications, and multimedia experiences all shipped as SWF files.
+    </p>
+    <p>
+      Calling a SWF a "video file" undersells it considerably. A SWF is closer to a compiled program. It contains a timeline, a virtual machine, bytecode, embedded assets, and interactive logic — all packed into a single binary blob. A video file plays back a fixed stream of frames. A SWF can branch, respond to input, load external data, and execute code. The two are fundamentally different things.
+    </p>
+    <div class="callout">
+      WasFlash currently supports visual SWF playback only. Audio output and ActionScript execution are not yet implemented — so interactive SWFs and anything relying on sound won't behave as expected.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">File Structure</div>
+    <h2>Inside the binary</h2>
+    <p>
+      A SWF file begins with a 3-byte signature — either <code>FWS</code> for uncompressed files, <code>CWS</code> for zlib-compressed (introduced in SWF 6), or <code>ZWS</code> for LZMA-compressed (SWF 13+). Everything after the 8-byte header is a sequence of tagged data blocks called <em>records</em>.
+    </p>
+    <div class="mono-block">
+<span class="comment">// SWF file header layout</span>
+Bytes 0–2   : Signature  ("FWS", "CWS", or "ZWS")
+Byte  3     : Version    (u8, e.g. 0x0E = SWF 14)
+Bytes 4–7   : FileLength (u32 little-endian, uncompressed size)
+Bytes 8–...  : RECT      (frame size, variable-length bit-packed)
+              FrameRate  (u16 fixed-point 8.8)
+              FrameCount (u16)
+              [Tag records follow...]
+    </div>
+    <p>
+      The RECT structure alone illustrates how aggressively SWF packs data. Rather than aligning values to byte boundaries, it stores its four coordinates in variable-width bit fields: the first 5 bits encode the bit-length of each coordinate, and the coordinates follow immediately at that width. Parsing it requires a bit-level reader, not a standard byte stream.
+    </p>
+    <p>
+      Each tag record consists of a 16-bit field where the upper 10 bits are the tag type and the lower 6 bits are the length — unless the length is 63 or more, in which case a separate 32-bit length field follows. There are over 90 distinct tag types covering everything from shape definitions and bitmaps to font tables, sound streams, and bytecode.
+    </p>
+    <div class="tag-row">
+      <span class="tag">DefineShape</span>
+      <span class="tag">PlaceObject</span>
+      <span class="tag">DefineBitsLossless</span>
+      <span class="tag">DefineSprite</span>
+      <span class="tag">DoAction</span>
+      <span class="tag">DefineFont</span>
+      <span class="tag">SoundStreamBlock</span>
+      <span class="tag">ShowFrame</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Rendering</div>
+    <h2>Shapes, not pixels</h2>
+    <p>
+      Flash content is vector-based. Shapes in a SWF are not stored as raster images — they are defined using fill styles, line styles, and edge records that describe curves and lines in twips (twentieths of a point, or 1/1440th of an inch). The renderer recomputes everything at display time, which is why Flash content scaled cleanly to any resolution long before high-DPI displays existed.
+    </p>
+    <p>
+      Curves use quadratic Bézier segments encoded as straight or curved edge records. Straight edges store delta-X and delta-Y offsets in variable-length bit fields. Curved edges store two control point deltas and an anchor delta, again in bit-packed form. Reconstructing a shape means walking these edge records and accumulating a path.
+    </p>
+    <div class="callout green">
+      WasFlash uses WebAssembly compiled from a native SWF renderer (Ruffle-adjacent architecture) to handle this geometry pipeline in the browser — no plugins required, no Adobe runtime.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Technical depth</div>
+    <h2>The bit-level reality</h2>
+    <p>
+      Most binary formats operate on byte-aligned fields. SWF does not. A significant portion of its structures are packed at the bit level, which means a correct parser must maintain a bit cursor independently of the byte cursor at all times. Reading a single RECT requires consuming an exact number of bits that isn't known until you read the first 5.
+    </p>
+    <p>
+      Coordinate values are stored as signed integers in two's complement at whatever bit-width the header specifies. A 15-bit signed value uses bit 14 as the sign bit, with the remaining 14 bits as the magnitude in standard two's complement — meaning the range is −16384 to +16383 at that width. The parser has to sign-extend these values correctly before they make sense in world space.
+    </p>
+    <div class="mono-block">
+<span class="comment">// Reading a bit-packed signed integer (conceptual)</span>
+fn read_sbits(reader, n: usize) -> i32 {
+    let raw = reader.read_ubits(n);       <span class="comment">// read n bits unsigned</span>
+    let sign_bit = 1 &lt;&lt; (n - 1);
+    if raw & sign_bit != 0 {
+        (raw as i32) - (1 &lt;&lt; n)           <span class="comment">// sign-extend</span>
+    } else {
+        raw as i32
+    }
+}
+    </div>
+    <p>
+      On top of the geometry layer sits a full display list model: objects are placed, moved, and removed across frames using PlaceObject and RemoveObject tags. The renderer must maintain this list across every ShowFrame tag to produce correct output — it's stateful, not frame-independent like a video codec.
+    </p>
+    <p>
+      And underneath all of that, later SWF versions embed ActionScript bytecode — first AVM1 (a stack-based virtual machine for AS1/AS2), and later AVM2 (a register-based VM for AS3 with typed operands, exception handling, and a full class system). Executing that correctly is a separate and substantial problem, which is why full SWF support remains an ongoing engineering effort rather than a solved one.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">This project</div>
+    <h2>What WasFlash is doing</h2>
+    <p>
+      WasFlash runs a WebAssembly build of a native SWF renderer directly in your browser. The WASM binary handles all parsing, display list management, and vector rasterization. The JavaScript layer sets the required cross-origin headers (COOP/COEP) to enable <code>SharedArrayBuffer</code>, which allows the renderer to use POSIX threads via Emscripten's pthread support — the same threading model it would have on a native system.
+    </p>
+    <p>
+      The result is a zero-install, zero-plugin SWF player that runs entirely client-side. No file leaves your browser. No server processes your content. The renderer is doing real work: parsing bit-packed records, rebuilding display lists, rasterizing vector geometry to a canvas, and advancing the timeline frame by frame.
+    </p>
+    <div class="tag-row">
+      <span class="tag green">WebAssembly</span>
+      <span class="tag green">pthreads via Emscripten</span>
+      <span class="tag green">SharedArrayBuffer</span>
+      <span class="tag green">COOP / COEP headers</span>
+      <span class="tag green">Client-side only</span>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">← Back to player</a>
+
+</div>
+</body>
+</html>
