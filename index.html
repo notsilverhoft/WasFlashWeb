@@ -184,10 +184,15 @@
   const popup = document.getElementById('flavortownPopup');
   const popupClose = document.getElementById('popupClose');
 
+  if (localStorage.getItem('popupClosed')) {
+    popup.style.display = 'none';
+  }
+
   popupClose.addEventListener('click', () => {
     popup.style.opacity = '0';
     popup.style.transform = 'translateY(20px)';
     setTimeout(() => popup.style.display = 'none', 300);
+    localStorage.setItem('popupClosed', 'true');
   });
   
   async function loadSwf() {
