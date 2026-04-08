@@ -593,3 +593,103 @@ header {
     outline-color: #fa982e;
     box-shadow: 0 0 12px #c60dab66;
 }
+
+/* Popup container */
+#flavortownPopup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+
+    background: #141414; /* slightly brighter than your bg */
+    border-radius: 8px;
+    padding: 0.8rem 0.9rem 1rem 0.9rem;
+
+    border: 1px solid #c60dab55;
+
+    box-shadow:
+        0 0 15px #c60dab55,
+        0 0 30px #c60dab22;
+
+    z-index: 9999;
+
+    transform: translateY(20px);
+    opacity: 0;
+    animation: popupFadeIn 0.6s ease forwards;
+}
+
+/* Header row */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+/* Icon */
+.popup-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    opacity: 0.9;
+}
+
+/* Close button */
+#popupClose {
+    background: none;
+    border: none;
+    color: #c60dabaa;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+#popupClose:hover {
+    color: #fa982e;
+    transform: scale(1.2);
+}
+
+/* Content */
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Main text */
+.popup-main {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #fa982e;
+    margin: 0;
+}
+
+/* Secondary text */
+.popup-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: #aaaaaa;
+    margin: 0;
+    opacity: 0.75;
+}
+
+/* Links */
+#flavortownPopup a {
+    color: #c60dab;
+    text-decoration: none;
+    border-bottom: 1px solid #c60dab55;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+#flavortownPopup a:hover {
+    color: #fa982e;
+    border-color: #fa982e;
+}
+
+/* Animation */
+@keyframes popupFadeIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
