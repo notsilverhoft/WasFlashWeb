@@ -286,6 +286,20 @@ header {
     pointer-events: none;
 }
 
+.disclaimer-wrap2 {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease, max-width 0.4s ease;
+    max-width: 600px;
+}
+.disclaimer-wrap2.hidden {
+    opacity: 0;
+    transform: translateX(16px);
+    max-width: 0;
+    pointer-events: none;
+}
+
 #TerminalControls label {
     background-image: linear-gradient(90deg, #39ff88, #00ffff, #39ff88);
     background-size: 300% 100%;
@@ -362,6 +376,15 @@ header {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.65rem;
     color: #39ff8844;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    min-width: unset;
+}
+
+#consoleDisclaimer {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: #fa982e;
     letter-spacing: 0.05em;
     white-space: nowrap;
     min-width: unset;
