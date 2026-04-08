@@ -594,22 +594,21 @@ header {
     box-shadow: 0 0 12px #c60dab66;
 }
 
-/* Popup container */
 #flavortownPopup {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 300px;
+    bottom: 24px;
+    right: 24px;
+    width: 360px;
 
-    background: #141414; /* slightly brighter than your bg */
-    border-radius: 8px;
-    padding: 0.8rem 0.9rem 1rem 0.9rem;
+    background: #161616;
+    border-radius: 10px;
+    padding: 1rem 1.1rem 1.2rem 1.1rem;
 
-    border: 1px solid #c60dab55;
+    border: 1px solid #c60dab66;
 
     box-shadow:
-        0 0 15px #c60dab55,
-        0 0 30px #c60dab22;
+        0 0 20px #c60dab66,
+        0 0 40px #c60dab33;
 
     z-index: 9999;
 
@@ -618,59 +617,21 @@ header {
     animation: popupFadeIn 0.6s ease forwards;
 }
 
-/* Header row */
-.popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.4rem;
-}
-
-/* Icon */
 .popup-icon {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    opacity: 0.9;
+    width: 26px;
+    height: 26px;
 }
 
-/* Close button */
 #popupClose {
-    background: none;
-    border: none;
-    color: #c60dabaa;
-    font-size: 1.1rem;
-    cursor: pointer;
-    font-family: 'Orbitron', monospace;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-#popupClose:hover {
-    color: #fa982e;
-    transform: scale(1.2);
+    font-size: 1.3rem;
 }
 
-/* Content */
-.popup-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-/* Main text */
 .popup-main {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
-    color: #fa982e;
-    margin: 0;
 }
-
-/* Secondary text */
 .popup-sub {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: #aaaaaa;
-    margin: 0;
+    font-size: 0.68rem;
     opacity: 0.75;
 }
 
