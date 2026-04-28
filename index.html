@@ -87,6 +87,27 @@
   let lastSeen = null;
   let consoleEnabled = false;
 
+  // Resume miniaudio's Web Audio context on any user gesture
+  function resumeAudio() {
+    try {
+      const iframe = document.getElementById('player');
+      const iframeWindow = iframe.contentWindow;
+      if (iframeWindow && typeof iframeWindow.miniaudio !== 'undefined') {
+        for (var i = 0; i < iframeWindow.miniaudio.device_count; i++) {
+          var device = iframeWindow.miniaudio.get_device_by_index(i);
+          if (device && device.webaudio) {
+            device.webaudio.resume().then(function() {
+              console.log('AudioContext resumed');
+            });
+          }
+        }
+      }
+    } catch(e) {}
+  }
+
+  document.addEventListener('click', resumeAudio);
+  document.addEventListener('keydown', resumeAudio);
+
   async function loadPreset(filepath) {
     const response = await fetch(filepath);
     const blob = await response.blob();
