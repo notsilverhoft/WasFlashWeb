@@ -178,6 +178,17 @@
   document.addEventListener('click', resumeAudio);
   document.addEventListener('keydown', resumeAudio);
 
+  function dismissSpriteWarning() {
+    if (document.getElementById('dontShowAgain').checked) {
+      localStorage.setItem('spriteWarningDismissed', 'true');
+    }
+    document.getElementById('spriteWarningOverlay').classList.add('hidden');
+  }
+
+  if (localStorage.getItem('spriteWarningDismissed')) {
+    document.getElementById('spriteWarningOverlay').classList.add('hidden');
+  }
+
   function startPolling() {
     if (pollId) clearInterval(pollId);
     if (!consoleEnabled) return;
