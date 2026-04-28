@@ -28,7 +28,7 @@
       Calling an SWF a "video file" undersells it considerably. An SWF is a complete compiled program; It contains a timeline, a virtual machine, bytecode, embedded assets, and interactive logic — all packed into a single binary SWF file, while a video file simply plays back a fixed stream of frames. A SWF can branch, respond to input, load external data, and execute code; The two are fundamentally different things.
     </p>
     <div class="callout">
-      WasFlash currently supports visual Video SWF playback only. Audio output and ActionScript execution are not yet implemented — so interactive SWFs and anything relying on pure animation won't behave as expected.
+      WasFlash currently supports visual SWF playback for shape-based animations with audio. DefineShape 1–3, the display list, color transforms, and stream audio are all implemented. ActionScript execution, sprites, and bitmap fills are not yet implemented.
     </div>
   </div>
 
@@ -71,29 +71,21 @@ Bytes 8–...  : RECT      (frame size, variable-length bit-packed)
   <div class="divider"></div>
 
   <div class="section">
-    <div class="section-label">Rendering</div>
-    <h2>Shapes, not pixels</h2>
+    <div class="section-label">Parsing</div>
+    <h2>Bit-packing, and why it hurts</h2>
     <p>
-      Flash content is vector-based. Shapes in a SWF are not stored as raster images — they are defined using fill styles, line styles, and edge records that describe curves and lines in twips (twentieths of a point, or 1/1440th of an inch). The renderer recomputes everything at display time, which is why Flash content scaled cleanly to any resolution long before high-DPI displays existed.
+      Most binary formats operate on byte-aligned fields. SWF does not. A significant portion of its structures are packed at the bit level, which means a correct parser must maintain a bit cursor independently of the byte cursor at all times. Reading a single coordinate value requires knowing how many bits wide it is — and that width is itself stored in the preceding bits.
     </p>
     <p>
-      Curves use quadratic Bézier segments encoded as straight or curved edge records. Straight edges store delta-X and delta-Y offsets in variable-length bit fields. Curved edges store two control point deltas and an anchor delta, again in bit-packed form. Reconstructing a shape means walking these edge records and accumulating a path.
+      To make this concrete: normal byte-aligned packing for RGBA is four bytes, one per channel, trivial to index. Bit-packed RGBA at 2 bits per channel fits in a single byte — but you can no longer index anything. You read bits one at a time, shift them into place, and track exactly where you are in the stream.
     </p>
-    <div class="callout green">
-      WasFlash uses WebAssembly compiled from a native SWF renderer (Ruffle-adjacent architecture) to handle this geometry pipeline in the browser — no plugins required, no Adobe runtime.
+    <div class="mono-block">
+<span class="comment">// Bit-packed field: stop reading when end code is found</span>
+01100101000100000001000000110010000 <span class="comment">|010010|</span> 111001010011
+<span class="comment">//                                    ^ end   ^ next structure begins here</span>
     </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="section">
-    <div class="section-label">Technical depth</div>
-    <h2>The bit-level reality</h2>
     <p>
-      Most binary formats operate on byte-aligned fields. SWF does not. A significant portion of its structures are packed at the bit level, which means a correct parser must maintain a bit cursor independently of the byte cursor at all times. Reading a single RECT requires consuming an exact number of bits that isn't known until you read the first 5.
-    </p>
-    <p>
-      Coordinate values are stored as signed integers in two's complement at whatever bit-width the header specifies. A 15-bit signed value uses bit 14 as the sign bit, with the remaining 14 bits as the magnitude in standard two's complement — meaning the range is −16384 to +16383 at that width. The parser has to sign-extend these values correctly before they make sense in world space.
+      SWF shape records mix 4-bit, 5-bit, 6-bit, and variable-width signed fields in the same stream. Coordinate values are stored as signed integers in two's complement at whatever bit-width the preceding header specifies. A 15-bit signed value uses bit 14 as the sign bit — meaning the parser has to sign-extend every value correctly before it means anything in world space.
     </p>
     <div class="mono-block">
 <span class="comment">// Reading a bit-packed signed integer (conceptual)</span>
@@ -107,8 +99,90 @@ fn read_sbits(reader, n: usize) -> i32 {
     }
 }
     </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Rendering</div>
+    <h2>Shapes, not pixels</h2>
     <p>
-      On top of the geometry layer sits a full display list model: objects are placed, moved, and removed across frames using PlaceObject and RemoveObject tags. The renderer must maintain this list across every ShowFrame tag to produce correct output — it's stateful, not frame-independent like a video codec.
+      Flash content is vector-based. Shapes in a SWF are not stored as raster images — they are defined using fill styles, line styles, and edge records that describe curves and lines in twips (twentieths of a point, or 1/1440th of an inch). The renderer recomputes everything at display time, which is why Flash content scaled cleanly to any resolution long before high-DPI displays existed.
+    </p>
+    <p>
+      Curves use quadratic Bézier segments encoded as straight or curved edge records. Straight edges store delta-X and delta-Y offsets in variable-length bit fields. Curved edges store two control point deltas and an anchor delta, again in bit-packed form. Reconstructing a shape means walking these edge records and accumulating a path — but the path itself has no fixed starting point, no guaranteed ordering, and no requirement that edges arrive in any particular sequence.
+    </p>
+    <div class="callout green">
+      WasFlash uses WebAssembly compiled from a native SWF renderer to handle this geometry pipeline in the browser — no plugins required, no Adobe runtime. Shape rasterization is handled by Skia, the same graphics library used in Chrome and Android.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Fill Styles</div>
+    <h2>Every edge has two sides</h2>
+    <p>
+      The most counterintuitive part of SWF shape rendering is that edges are dual-sided. Every edge record can carry two independent fill style references — one for the region to its left, and one for the region to its right. These are called fillStyle1 and fillStyle0 respectively, and they don't describe the edge itself — they describe what color fills the space on each side of it.
+    </p>
+    <p>
+      This means a single edge can belong to two different fill regions at the same time. A renderer that simply collects edges per fill style and draws them will get the wrong result — because the same edge drawn in two different directions creates two different contour contributions. The fill on the left side of an edge travelling east is the same as the fill on the right side of the same edge travelling west. Direction matters.
+    </p>
+    <div class="mono-block">
+<span class="comment">// Dual-sided edge: one edge, two fill contributions</span>
+Edge A → B  :  fillStyle1 = 1  (fill 1 is on the LEFT  of A→B)
+               fillStyle0 = 2  (fill 2 is on the RIGHT of A→B)
+
+<span class="comment">// For fill 1: add edge A→B in forward direction</span>
+<span class="comment">// For fill 2: add edge A→B in reverse (B→A)</span>
+    </div>
+    <p>
+      A correct implementation has to split each edge into directed half-edges, accumulate them by fill style index into separate pending paths, and then close and rasterize each path independently. The winding direction of the accumulated segments is what the even-odd fill rule later uses to determine where fills overlap — and where holes should appear.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Fill Rules</div>
+    <h2>Holes from winding</h2>
+    <p>
+      The even-odd fill rule is how SWF creates shapes with holes — rings, frames, donuts, cutouts of any complexity — without requiring a separate "subtract" operation. The rule is purely geometric: for any point inside a path, cast a ray in any direction and count how many path contours it crosses. If the count is odd, the point is filled. If even, it is not.
+    </p>
+    <p>
+      For this to work, the outer boundary and the inner hole must be separate closed contours within the same path. The renderer draws both contours into the same path object, and the even-odd rule handles the rest automatically — any area enclosed by exactly one contour is filled, and any area enclosed by two overlapping contours cancels out to transparent.
+    </p>
+    <div class="mono-block">
+<span class="comment">// Even-odd fill: ray crossing count determines fill</span>
+Point inside outer rect only   →  1 crossing  →  filled
+Point inside outer + inner     →  2 crossings →  transparent (hole)
+Point outside everything       →  0 crossings →  transparent
+    </div>
+    <p>
+      This is why the winding direction of fillStyle0 edges is reversed — the inner contour needs to wind opposite to the outer one. When both contours are in the same SkPath with the even-odd fill type set, Skia handles the hole punching correctly. Getting the winding wrong in either direction produces a filled circle instead of a ring, or a ring filled in the wrong region.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Display List</div>
+    <h2>A stateful, depth-ordered stage</h2>
+    <p>
+      SWF rendering is not frame-independent. Unlike a video codec that encodes every frame in isolation, an SWF player maintains a persistent display list that accumulates state across the entire timeline. Shapes are defined once in the character dictionary and then placed, moved, and removed from the display list using control tags.
+    </p>
+    <p>
+      Every object on the display list has a depth — a positive integer that determines draw order. Higher depths render on top of lower ones. A PlaceObject tag can add a new character at a given depth, replace whatever was there before, or modify an existing entry's transform or color. A RemoveObject tag removes an entry from the list entirely.
+    </p>
+    <div class="mono-block">
+<span class="comment">// Display list state across frames (simplified)</span>
+Frame 1:  Place characterID=3 at depth=1  → background appears
+Frame 2:  Place characterID=7 at depth=2  → character appears on top
+Frame 3:  Move depth=2 matrix to x+10     → character slides right
+Frame 5:  Remove depth=2                  → character disappears
+    </div>
+    <p>
+      At every ShowFrame tag, the renderer must flush the current display list to the screen in depth order — drawing the background clear, then each depth from lowest to highest. None of this is implicit; the player has to maintain the full list across every frame and correctly handle characters that are defined after they are first placed, characters that update their transform without changing their ID, and characters that are removed and re-added at the same depth across frames.
     </p>
     <p>
       And underneath all of that, later SWF versions embed ActionScript bytecode — first AVM1 (a stack-based virtual machine for AS1/AS2), and later AVM2 (a register-based VM for AS3 with typed operands, exception handling, and a full class system). Executing that correctly is a separate and substantial problem, which is why full SWF support remains an ongoing engineering effort rather than a solved one.
@@ -124,12 +198,14 @@ fn read_sbits(reader, n: usize) -> i32 {
       WasFlash runs a WebAssembly build of a native SWF renderer directly in your browser. The WASM binary handles all parsing, display list management, and vector rasterization. The JavaScript layer sets the required cross-origin headers (COOP/COEP) to enable <code>SharedArrayBuffer</code>, which allows the renderer to use POSIX threads via Emscripten's pthread support — the same threading model it would have on a native system.
     </p>
     <p>
-      The result is a zero-install, zero-plugin SWF player that runs entirely client-side. The hope is that one day you will be able to just embed this into your website, and it will play whatever content you please(Usually games).
+      The result is a zero-install, zero-plugin SWF player that runs entirely client-side. The hope is that one day you will be able to just embed this into your website, and it will play whatever content you please.
+    </p>
     <div class="tag-row">
       <span class="tag green">WebAssembly</span>
       <span class="tag green">pthreads via Emscripten</span>
       <span class="tag green">SharedArrayBuffer</span>
       <span class="tag green">COOP / COEP headers</span>
+      <span class="tag green">Skia rendering</span>
       <span class="tag green">Client-side only</span>
     </div>
   </div>
