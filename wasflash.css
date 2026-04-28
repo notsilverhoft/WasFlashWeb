@@ -730,7 +730,7 @@ header {
     background: #0F0F0F;
     border: 1px solid #c60dab55;
     border-radius: 10px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 0 20px #c60dab44, 0 0 40px #c60dab22;
     display: none;
     flex-direction: column;
@@ -739,6 +739,62 @@ header {
 }
 
 #DropdownMenu.open {
+    display: flex;
+}
+
+.DropdownCategory {
+    position: relative;
+}
+
+.DropdownCategory:not(:last-child) {
+    border-bottom: 1px solid #c60dab22;
+}
+
+.DropdownCategoryLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #fa982e99;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+}
+
+.DropdownCategory:hover > .DropdownCategoryLabel {
+    color: #fa982e;
+    background: #fa982e0a;
+}
+
+.DropdownArrow {
+    font-size: 0.9rem;
+    margin-left: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.DropdownCategory:hover > .DropdownCategoryLabel .DropdownArrow {
+    transform: translateX(2px);
+}
+
+.DropdownSubmenu {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 6px);
+    background: #0F0F0F;
+    border: 1px solid #c60dab55;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #c60dab44, 0 0 40px #c60dab22;
+    display: none;
+    flex-direction: column;
+    min-width: 160px;
+    overflow: hidden;
+}
+
+.DropdownCategory:hover > .DropdownSubmenu {
     display: flex;
 }
 
