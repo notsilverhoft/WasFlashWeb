@@ -717,3 +717,51 @@ header {
             0 0 55px #c60dab44;
     }
 }
+
+#DropdownWrap {
+    position: relative;
+}
+
+#DropdownMenu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0F0F0F;
+    border: 1px solid #c60dab55;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px #c60dab44, 0 0 40px #c60dab22;
+    display: none;
+    flex-direction: column;
+    min-width: 160px;
+    z-index: 100;
+}
+
+#DropdownMenu.open {
+    display: flex;
+}
+
+.DropdownItem {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #c60dab22;
+    color: #c60dab99;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.DropdownItem:last-child {
+    border-bottom: none;
+}
+
+.DropdownItem:hover {
+    background: #c60dab11;
+    color: #fa982e;
+}
