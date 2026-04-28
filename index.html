@@ -25,6 +25,33 @@
 </div>
 
 <body id="Content">
+    <div id="spriteWarningOverlay">
+    <div id="spriteWarningModal">
+      <div class="modal-header">
+        <span class="modal-tag">HEADS UP</span>
+        <h2 class="modal-title">Animations may look incomplete</h2>
+      </div>
+      <div class="modal-body">
+        <p>
+          WasFlash currently renders SWF shapes directly — but most Flash animations use <strong>sprites</strong> (MovieClips) to hold their characters and effects. Sprite support is not yet implemented, so characters may appear as outlines, and behave unexpectedly.
+        </p>
+        <p>
+          The two included animation examples are a good starting point. If you want look at more, <a href="https://archive.org/details/swf_hsr_2000-2009" target="_blank">this archive</a> is a great source of shape-based Flash animations that should work with the current implimentation. You can test these by uploading.
+        </p>
+        <div class="modal-callout">
+          Not every animation will work — and that's expected. Any ActionScript based animation will likely fail, I will get to Actionscript last as it is a multi year endevor.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label class="modal-check-wrap">
+          <input type="checkbox" id="dontShowAgain" />
+          <span class="modal-check-label">Don't show this again</span>
+        </label>
+        <button class="modal-dismiss" onclick="dismissSpriteWarning()">Got it</button>
+      </div>
+    </div>
+  </div>
+  
   <div class="disclaimer-wrap2" id="disclaimerWrap2">
     <span id="consoleDisclaimer2">Note: If you are uploading, hit upload, then start and wait a few seconds! &bull; For presets, select an example, then hit start :D</span>
   </div>
