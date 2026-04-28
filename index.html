@@ -12,13 +12,11 @@
     <img src="ft.avif" alt="icon" class="popup-icon">
     <button id="popupClose">&times;</button>
   </div>
-
   <div class="popup-content">
     <p class="popup-main">
       Coming from Flavortown? Check 
       <a href="about.html">About</a> before you vote!
     </p>
-
     <p class="popup-sub">
       Never heard of Flavortown? Check it out: 
       <a href="https://flavortown.hack.club/?ref=WasFlash" target="_blank">Flavortown</a>
@@ -28,51 +26,58 @@
 
 <body id="Content">
   <div class="disclaimer-wrap2" id="disclaimerWrap2">
-    <span id="consoleDisclaimer2">Note: If you are uploading, hit upload, then start and wait a few seconds! &bull; For presets, click and wait :D</span>
+    <span id="consoleDisclaimer2">Note: If you are uploading, hit upload, then start and wait a few seconds! &bull; For presets, select an example, then hit start :D</span>
   </div>
-<div id="PlayerControls">
-  <input type="file" id="SWFFile" accept=".swf" style="display:none" />
-  <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
-  <div id="PresetControls">
-    <button class="PresetButton" onclick="loadPresetAndStart('samples/lego.swf')">Lego.swf</button>
-    <button class="PresetButton" onclick="loadPresetAndStart('samples/ocean.swf')">Ocean.swf</button>
-    <button class="PresetButton" onclick="loadPresetAndStart('samples/getdown.swf')">Getdown.swf</button>
-    <button class="PresetButton" onclick="loadPresetAndStart('samples/odetoflash.swf')">Ode.swf</button>
+  <div id="PlayerControls">
+    <input type="file" id="SWFFile" accept=".swf" style="display:none" />
+    <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
+
+    <div id="DropdownWrap">
+      <button class="PlayerButtons" id="DropdownToggle" onclick="toggleDropdown()">Pick an Example</button>
+      <div id="DropdownMenu">
+        <button class="DropdownItem" onclick="selectPreset('samples/lego.swf', 'Lego.swf')">Lego.swf</button>
+        <button class="DropdownItem" onclick="selectPreset('samples/ocean.swf', 'Ocean.swf')">Ocean.swf</button>
+        <button class="DropdownItem" onclick="selectPreset('samples/getdown.swf', 'Getdown.swf')">Getdown.swf</button>
+        <button class="DropdownItem" onclick="selectPreset('samples/odetoflash.swf', 'Ode.swf')">Ode.swf</button>
+      </div>
+    </div>
+
+    <button class="PlayerButtons" onclick="loadSwf()">Start</button>
   </div>
-  <button class="PlayerButtons" onclick="loadSwf()">Start</button>
-</div>
-<div id="PlayerLabel">
-  <span>WASFLASH PLAYER</span>
-</div>
-<div id="PlayerGlow">
-  <div id="PlayerFrame">
-    <iframe id="player" style="border:none;"></iframe>
+
+  <div id="PlayerLabel">
+    <span>WASFLASH PLAYER</span>
   </div>
-</div>
-<div id="TerminalLabel">
-  <span>CONSOLE OUTPUT</span>
-</div>
-<div id="TerminalControls">
-  <div class="slider-wrap hidden" id="sliderWrap">
-    <label for="ThrottleSlider">THROTTLE</label>
-    <input type="range" id="ThrottleSlider" min="0" max="2000" step="50" value="250" />
-    <span id="ThrottleValue">250ms</span>
-  </div>
-  <div class="toggle-wrap">
-    <label for="consoleToggle">CONSOLE</label>
-    <div class="switch-track" id="consoleToggle" role="switch" aria-checked="false" tabindex="0">
-      <div class="switch-thumb"></div>
+  <div id="PlayerGlow">
+    <div id="PlayerFrame">
+      <iframe id="player" style="border:none;"></iframe>
     </div>
   </div>
-  <div class="disclaimer-wrap" id="disclaimerWrap">
-    <span id="consoleDisclaimer">Note: Must be set before starting &bull; Causes lag</span>
+  <div id="TerminalLabel">
+    <span>CONSOLE OUTPUT</span>
   </div>
-</div>
-<div id="Terminal">
-  <div id="TerminalInner">
-    <div id="TerminalOutput"></div>
+  <div id="TerminalControls">
+    <div class="slider-wrap hidden" id="sliderWrap">
+      <label for="ThrottleSlider">THROTTLE</label>
+      <input type="range" id="ThrottleSlider" min="0" max="2000" step="50" value="250" />
+      <span id="ThrottleValue">250ms</span>
+    </div>
+    <div class="toggle-wrap">
+      <label for="consoleToggle">CONSOLE</label>
+      <div class="switch-track" id="consoleToggle" role="switch" aria-checked="false" tabindex="0">
+        <div class="switch-thumb"></div>
+      </div>
+    </div>
+    <div class="disclaimer-wrap" id="disclaimerWrap">
+      <span id="consoleDisclaimer">Note: Must be set before starting &bull; Causes lag</span>
+    </div>
   </div>
-</div>
+  <div id="Terminal">
+    <div id="TerminalInner">
+      <div id="TerminalOutput"></div>
+    </div>
+  </div>
+
 <script>
   const output = document.getElementById('TerminalOutput');
   const terminalInner = document.getElementById('TerminalInner');
@@ -87,7 +92,30 @@
   let lastSeen = null;
   let consoleEnabled = false;
 
-  // Resume miniaudio's Web Audio context on any user gesture
+  function toggleDropdown() {
+    const menu = document.getElementById('DropdownMenu');
+    menu.classList.toggle('open');
+  }
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('DropdownWrap');
+    if (!wrap.contains(e.target)) {
+      document.getElementById('DropdownMenu').classList.remove('open');
+    }
+  });
+
+  async function selectPreset(filepath, label) {
+    const response = await fetch(filepath);
+    const blob = await response.blob();
+    const basename = filepath.split('/').pop();
+    const file = new File([blob], basename, { type: 'application/x-shockwave-flash' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('SWFFile').files = dt.files;
+    document.getElementById('DropdownToggle').textContent = label;
+    document.getElementById('DropdownMenu').classList.remove('open');
+  }
+
   function resumeAudio() {
     try {
       const iframe = document.getElementById('player');
@@ -107,21 +135,6 @@
 
   document.addEventListener('click', resumeAudio);
   document.addEventListener('keydown', resumeAudio);
-
-  async function loadPreset(filepath) {
-    const response = await fetch(filepath);
-    const blob = await response.blob();
-    const basename = filepath.split('/').pop();
-    const file = new File([blob], basename, { type: 'application/x-shockwave-flash' });
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    document.getElementById('SWFFile').files = dt.files;
-  }
-
-  async function loadPresetAndStart(filepath) {
-    await loadPreset(filepath);
-    await loadSwf();
-  }
 
   function startPolling() {
     if (pollId) clearInterval(pollId);
@@ -215,7 +228,7 @@
     setTimeout(() => popup.style.display = 'none', 300);
     localStorage.setItem('popupClosed', 'true');
   });
-  
+
   async function loadSwf() {
     const file = document.getElementById('SWFFile').files[0];
     if (!file) return alert('Please select a .swf file first');
