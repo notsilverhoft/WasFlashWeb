@@ -32,33 +32,30 @@
     <input type="file" id="SWFFile" accept=".swf" style="display:none" />
     <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
 
-   <div id="DropdownWrap">
-  <button class="PlayerButtons" id="DropdownToggle" onclick="toggleDropdown()">Pick an Example</button>
-  <div id="DropdownMenu">
+    <div id="DropdownWrap">
+      <button class="PlayerButtons" id="DropdownToggle" onclick="toggleDropdown()">Pick an Example</button>
+      <div id="DropdownMenu">
 
-    <div class="DropdownCategory" id="catAnimations">
-      <span class="DropdownCategoryLabel">Animations <span class="DropdownArrow">›</span></span>
-      <div class="DropdownSubmenu" id="submenuAnimations">
-        <button class="DropdownItem" onclick="selectPreset('samples/expfilm.swf', 'Expfilm.swf')">Expfilm.swf</button>
-        <button class="DropdownItem" onclick="selectPreset('samples/fooloftown.swf', 'Fooloftown.swf')">Fooloftown.swf</button>
+        <div class="DropdownCategory" id="catAnimations">
+          <span class="DropdownCategoryLabel">Animations <span class="DropdownArrow">›</span></span>
+          <div class="DropdownSubmenu" id="submenuAnimations">
+            <button class="DropdownItem" onclick="selectPreset('samples/expfilm.swf', 'Expfilm.swf')">Expfilm.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/fooloftown.swf', 'Fooloftown.swf')">Fooloftown.swf</button>
+          </div>
+        </div>
+
+        <div class="DropdownCategory" id="catVideos">
+          <span class="DropdownCategoryLabel">Videos <span class="DropdownArrow">›</span></span>
+          <div class="DropdownSubmenu" id="submenuVideos">
+            <button class="DropdownItem" onclick="selectPreset('samples/lego.swf', 'Lego.swf')">Lego.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/ocean.swf', 'Ocean.swf')">Ocean.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/getdown.swf', 'Getdown.swf')">Getdown.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/odetoflash.swf', 'Ode.swf')">Ode.swf</button>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <div class="DropdownCategory" id="catVideos">
-      <span class="DropdownCategoryLabel">Videos <span class="DropdownArrow">›</span></span>
-      <div class="DropdownSubmenu" id="submenuVideos">
-        <button class="DropdownItem" onclick="selectPreset('samples/lego.swf', 'Lego.swf')">Lego.swf</button>
-        <button class="DropdownItem" onclick="selectPreset('samples/ocean.swf', 'Ocean.swf')">Ocean.swf</button>
-        <button class="DropdownItem" onclick="selectPreset('samples/getdown.swf', 'Getdown.swf')">Getdown.swf</button>
-        <button class="DropdownItem" onclick="selectPreset('samples/odetoflash.swf', 'Ode.swf')">Ode.swf</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-  </div>
-</div>
 
     <button class="PlayerButtons" onclick="loadSwf()">Start</button>
   </div>
