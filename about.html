@@ -32,8 +32,6 @@
     </div>
   </div>
 
-  <div class="divider"></div>
-
   <div class="section">
     <div class="section-label">File Structure</div>
     <h2>Inside the binary</h2>
@@ -56,19 +54,7 @@ Bytes 8–...  : RECT      (frame size, variable-length bit-packed)
     <p>
       Each tag record consists of a 16-bit field where the upper 10 bits are the tag type and the lower 6 bits are the length — unless the length is 63 or more, in which case a separate 32-bit length field follows. There are over 90 distinct tag types covering everything from shape definitions and bitmaps to font tables, sound streams, and bytecode.
     </p>
-    <div class="tag-row">
-      <span class="tag">DefineShape</span>
-      <span class="tag">PlaceObject</span>
-      <span class="tag">DefineBitsLossless</span>
-      <span class="tag">DefineSprite</span>
-      <span class="tag">DoAction</span>
-      <span class="tag">DefineFont</span>
-      <span class="tag">SoundStreamBlock</span>
-      <span class="tag">ShowFrame</span>
-    </div>
   </div>
-
-  <div class="divider"></div>
 
   <div class="section">
     <div class="section-label">Parsing</div>
@@ -101,8 +87,6 @@ fn read_sbits(reader, n: usize) -> i32 {
     </div>
   </div>
 
-  <div class="divider"></div>
-
   <div class="section">
     <div class="section-label">Rendering</div>
     <h2>Shapes, not pixels</h2>
@@ -116,8 +100,6 @@ fn read_sbits(reader, n: usize) -> i32 {
       WasFlash uses WebAssembly compiled from a native SWF renderer to handle this geometry pipeline in the browser — no plugins required, no Adobe runtime. Shape rasterization is handled by Skia, the same graphics library used in Chrome and Android.
     </div>
   </div>
-
-  <div class="divider"></div>
 
   <div class="section">
     <div class="section-label">Fill Styles</div>
@@ -141,8 +123,6 @@ Edge A → B  :  fillStyle1 = 1  (fill 1 is on the LEFT  of A→B)
     </p>
   </div>
 
-  <div class="divider"></div>
-
   <div class="section">
     <div class="section-label">Fill Rules</div>
     <h2>Holes from winding</h2>
@@ -162,8 +142,6 @@ Point outside everything       →  0 crossings →  transparent
       This is why the winding direction of fillStyle0 edges is reversed — the inner contour needs to wind opposite to the outer one. When both contours are in the same SkPath with the even-odd fill type set, Skia handles the hole punching correctly. Getting the winding wrong in either direction produces a filled circle instead of a ring, or a ring filled in the wrong region.
     </p>
   </div>
-
-  <div class="divider"></div>
 
   <div class="section">
     <div class="section-label">Display List</div>
@@ -189,8 +167,6 @@ Frame 5:  Remove depth=2                  → character disappears
     </p>
   </div>
 
-  <div class="divider"></div>
-
   <div class="section">
     <div class="section-label">This project</div>
     <h2>What WasFlash is doing</h2>
@@ -200,14 +176,6 @@ Frame 5:  Remove depth=2                  → character disappears
     <p>
       The result is a zero-install, zero-plugin SWF player that runs entirely client-side. The hope is that one day you will be able to just embed this into your website, and it will play whatever content you please.
     </p>
-    <div class="tag-row">
-      <span class="tag green">WebAssembly</span>
-      <span class="tag green">pthreads via Emscripten</span>
-      <span class="tag green">SharedArrayBuffer</span>
-      <span class="tag green">COOP / COEP headers</span>
-      <span class="tag green">Skia rendering</span>
-      <span class="tag green">Client-side only</span>
-    </div>
   </div>
 
   <a href="index.html" class="back-link">← Back to player</a>

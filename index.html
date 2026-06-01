@@ -7,25 +7,25 @@
   <a href="about.html" class="nav-link">ABOUT</a>
 </header>
 
-<div id="flavortownPopup">
+<div id="stardancePopup">
   <div class="popup-header">
-    <img src="ft.avif" alt="icon" class="popup-icon">
+    <img src="sd.png" alt="icon" class="popup-icon">
     <button id="popupClose">&times;</button>
   </div>
   <div class="popup-content">
     <p class="popup-main">
-      Coming from Flavortown? Check 
+      Coming from Stardance? Check 
       <a href="about.html">About</a> before you vote!
     </p>
     <p class="popup-sub">
-      Never heard of Flavortown? Check it out: 
-      <a href="https://flavortown.hack.club/?ref=WasFlash" target="_blank">Flavortown</a>
+      Never heard of Stardance? Check it out: 
+      <a href="https://stardance.hackclub.com" target="_blank">Stardance</a>
     </p>
   </div>
 </div>
 
 <body id="Content">
-    <div id="spriteWarningOverlay">
+  <div id="spriteWarningOverlay">
     <div id="spriteWarningModal">
       <div class="modal-header">
         <span class="modal-tag">HEADS UP</span>
@@ -51,10 +51,11 @@
       </div>
     </div>
   </div>
-  
+
   <div class="disclaimer-wrap2" id="disclaimerWrap2">
     <span id="consoleDisclaimer2">Note: If you are uploading, hit upload, then start and wait a few seconds! &bull; For presets, select an example, then hit start :D</span>
   </div>
+
   <div id="PlayerControls">
     <input type="file" id="SWFFile" accept=".swf" style="display:none" />
     <button class="PlayerButtons" onclick="document.getElementById('SWFFile').click()">Upload SWF</button>
@@ -62,7 +63,6 @@
     <div id="DropdownWrap">
       <button class="PlayerButtons" id="DropdownToggle" onclick="toggleDropdown()">Pick an Example</button>
       <div id="DropdownMenu">
-
         <div class="DropdownCategory" id="catAnimations">
           <span class="DropdownCategoryLabel">Animations <span class="DropdownArrow">›</span></span>
           <div class="DropdownSubmenu" id="submenuAnimations">
@@ -70,7 +70,6 @@
             <button class="DropdownItem" onclick="selectPreset('samples/fooloftown.swf', 'Fooloftown.swf')">Fooloftown.swf</button>
           </div>
         </div>
-
         <div class="DropdownCategory" id="catVideos">
           <span class="DropdownCategoryLabel">Videos <span class="DropdownArrow">›</span></span>
           <div class="DropdownSubmenu" id="submenuVideos">
@@ -80,11 +79,10 @@
             <button class="DropdownItem" onclick="selectPreset('samples/odetoflash.swf', 'Ode.swf')">Ode.swf</button>
           </div>
         </div>
-
       </div>
     </div>
 
-    <button class="PlayerButtons" onclick="loadSwf()">Start</button>
+    <button class="PlayerButtons" id="StartStopBtn">Start</button>
   </div>
 
   <div id="PlayerLabel">
@@ -95,6 +93,7 @@
       <iframe id="player" style="border:none;"></iframe>
     </div>
   </div>
+
   <div id="TerminalLabel">
     <span>CONSOLE OUTPUT</span>
   </div>
@@ -113,6 +112,7 @@
     <div class="disclaimer-wrap" id="disclaimerWrap">
       <span id="consoleDisclaimer">Note: Must be set before starting &bull; Causes lag</span>
     </div>
+    <button id="clearTerminal" onclick="document.getElementById('TerminalOutput').innerHTML = ''">Clear</button>
   </div>
   <div id="Terminal">
     <div id="TerminalInner">
@@ -134,14 +134,43 @@
   let lastSeen = null;
   let consoleEnabled = false;
 
+  function formatFileName(name) {
+    const maxStem = 8;
+    const stem = name.replace(/\.swf$/i, '');
+    const cap = stem.charAt(0).toUpperCase() + stem.slice(1);
+    return cap.length > maxStem
+      ? cap.slice(0, maxStem) + '... .swf'
+      : cap + '.swf';
+  }
+
+  document.getElementById('SWFFile').addEventListener('change', function() {
+    if (this.files[0]) {
+      document.getElementById('DropdownToggle').textContent = formatFileName(this.files[0].name);
+    }
+  });
+
+  const startStopBtn = document.getElementById('StartStopBtn');
+
+  startStopBtn.addEventListener('click', () => {
+    if (startStopBtn.textContent === 'Start') {
+      loadSwf();
+    } else {
+      stopSwf();
+    }
+  });
+
+  function stopSwf() {
+    document.getElementById('player').srcdoc = '';
+    stopPolling();
+    startStopBtn.textContent = 'Start';
+  }
+
   function toggleDropdown() {
-    const menu = document.getElementById('DropdownMenu');
-    menu.classList.toggle('open');
+    document.getElementById('DropdownMenu').classList.toggle('open');
   }
 
   document.addEventListener('click', (e) => {
-    const wrap = document.getElementById('DropdownWrap');
-    if (!wrap.contains(e.target)) {
+    if (!document.getElementById('DropdownWrap').contains(e.target)) {
       document.getElementById('DropdownMenu').classList.remove('open');
     }
   });
@@ -189,25 +218,46 @@
     document.getElementById('spriteWarningOverlay').classList.add('hidden');
   }
 
+  let pollIsRaf = false;
+
   function startPolling() {
-    if (pollId) clearInterval(pollId);
+    stopPolling();
     if (!consoleEnabled) return;
-    if (throttleMs === 0) return;
-    pollId = setInterval(() => {
-      if (!consoleEnabled) return;
-      try {
-        const iframe = document.getElementById('player');
-        const log = iframe.contentWindow.__lastLog;
-        if (log && log !== lastSeen) {
-          lastSeen = log;
-          logToTerminal(log.type, [Array.from(log.args).map(String)]);
-        }
-      } catch(e) {}
-    }, throttleMs);
+
+    if (throttleMs === 0) {
+      pollIsRaf = true;
+      function rafPoll() {
+        if (!consoleEnabled) return;
+        try {
+          const log = document.getElementById('player').contentWindow.__lastLog;
+          if (log && log !== lastSeen) {
+            lastSeen = log;
+            logToTerminal(log.type, [Array.from(log.args).map(String)]);
+          }
+        } catch(e) {}
+        pollId = requestAnimationFrame(rafPoll);
+      }
+      pollId = requestAnimationFrame(rafPoll);
+    } else {
+      pollIsRaf = false;
+      pollId = setInterval(() => {
+        if (!consoleEnabled) return;
+        try {
+          const log = document.getElementById('player').contentWindow.__lastLog;
+          if (log && log !== lastSeen) {
+            lastSeen = log;
+            logToTerminal(log.type, [Array.from(log.args).map(String)]);
+          }
+        } catch(e) {}
+      }, throttleMs);
+    }
   }
 
   function stopPolling() {
-    if (pollId) { clearInterval(pollId); pollId = null; }
+    if (pollId) {
+      pollIsRaf ? cancelAnimationFrame(pollId) : clearInterval(pollId);
+      pollId = null;
+    }
     lastSeen = null;
   }
 
@@ -217,11 +267,7 @@
     consoleToggle.setAttribute('aria-checked', enabled);
     sliderWrap.classList.toggle('hidden', !enabled);
     disclaimerWrap.classList.toggle('hidden', enabled);
-    if (enabled) {
-      startPolling();
-    } else {
-      stopPolling();
-    }
+    enabled ? startPolling() : stopPolling();
   }
 
   consoleToggle.addEventListener('click', () => setConsole(!consoleEnabled));
@@ -268,18 +314,14 @@
     }
   });
 
-  const popup = document.getElementById('flavortownPopup');
-  const popupClose = document.getElementById('popupClose');
+  const popup = document.getElementById('stardancePopup');
+  if (localStorage.getItem('stardanceClosed')) popup.style.display = 'none';
 
-  if (localStorage.getItem('popupClosed')) {
-    popup.style.display = 'none';
-  }
-
-  popupClose.addEventListener('click', () => {
+  document.getElementById('popupClose').addEventListener('click', () => {
     popup.style.opacity = '0';
     popup.style.transform = 'translateY(20px)';
     setTimeout(() => popup.style.display = 'none', 300);
-    localStorage.setItem('popupClosed', 'true');
+    localStorage.setItem('stardanceClosed', 'true');
   });
 
   async function loadSwf() {
@@ -325,6 +367,7 @@
         observer.observe(document.getElementById('canvas'));
       <\/script>
     `;
+    startStopBtn.textContent = 'Stop';
     iframe.onload = () => { if (consoleEnabled) startPolling(); };
   }
 </script>
