@@ -342,6 +342,11 @@
       });
     ` : '';
 
+    const _container = document.getElementById('PlayerFrame');
+    const _dpr = window.devicePixelRatio || 1;
+    const _cw = _container ? Math.floor(_container.offsetWidth * _dpr) : 0;
+    const _ch = _container ? Math.floor(_container.offsetHeight * _dpr) : 0;
+
     iframe.srcdoc = `
       <style>body { margin: 0; overflow: hidden; }</style>
       <canvas id="canvas"></canvas>
@@ -356,7 +361,7 @@
               canvas: document.getElementById('canvas'),
               onRuntimeInitialized: function() {
                 this.FS.writeFile('/${basename}', bytes);
-                this.callMain(['/${basename}']);
+                this.callMain(['/${basename}', String(${_cw}), String(${_ch})]);
               }
             });
           });
