@@ -33,13 +33,13 @@
       </div>
       <div class="modal-body">
         <p>
-          WasFlash currently renders SWF shapes directly — but most Flash animations use <strong>sprites</strong> (MovieClips) to hold their characters and effects. Sprite support is not yet implemented, so characters may appear as outlines, and behave unexpectedly.
+          WasFlash currently renders SWF shapes directly — but most Flash animations use <strong>sprites</strong> (MovieClips) to hold their characters and effects. Sprite support is now live! Please report any issues on GitHub.
         </p>
         <p>
           The two included animation examples are a good starting point. If you want look at more, <a href="https://archive.org/details/swf_hsr_2000-2009" target="_blank">this archive</a> is a great source of shape-based Flash animations that should work with the current implimentation. You can test these by uploading.
         </p>
         <div class="modal-callout">
-          Not every animation will work — and that's expected. Any ActionScript based animation will likely fail, I will get to Actionscript last as it is a multi year endevor.
+          Not every animation will work — and that's expected. Any ActionScript based animation will likely have errors; I will get to Actionscript last as it is a multi year endevor.
         </div>
       </div>
       <div class="modal-footer">
@@ -68,6 +68,10 @@
           <div class="DropdownSubmenu" id="submenuAnimations">
             <button class="DropdownItem" onclick="selectPreset('samples/expfilm.swf', 'Expfilm.swf')">Expfilm.swf</button>
             <button class="DropdownItem" onclick="selectPreset('samples/fooloftown.swf', 'Fooloftown.swf')">Fooloftown.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/easywayout.swf', 'Easywayout.swf')">Easywayout.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/preloaded.swf', 'Preloaded.swf')">Preloaded.swf</button>
+            <button class="DropdownItem" onclick="selectPreset('samples/xmas.swf', 'Xmas.swf')">Xmas.swf</button>
+    
           </div>
         </div>
         <div class="DropdownCategory" id="catVideos">
